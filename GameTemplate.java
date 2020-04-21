@@ -59,22 +59,21 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 		x=100;
 		y=355;
 		gameOn=true;
-		System.out.println("Messing with you from Up here");
 		wolfBox = new Rectangle(x + 100,y+100,200,200);
 		jumpBox = new Rectangle(x + 100,y+30,200,200);
 
 		try {
 			for(int x=0;x<num;x++){
-				wolves[x]= ImageIO.read(new File(x+".png")); 
+				wolves[x]= ImageIO.read(new File("wolf/" + x +".png")); 
 				wolvess[x] = wolves[x].getScaledInstance(400, 400, Image.SCALE_DEFAULT);
 			}
 			for(int x=0;x<num2;x++){
 				int a = x + 50;
-				jump[x]= ImageIO.read(new File(a+".png"));
+				jump[x]= ImageIO.read(new File("wolf/"+ a +".png"));
 				jumpp[x] = jump[x].getScaledInstance(400, 400, Image.SCALE_DEFAULT);
 			}
 			for(int x=0;x<num3;x++){
-				background[x]= ImageIO.read(new File("layer" + x +".png")); 
+				background[x]= ImageIO.read(new File("background/layer" + x +".png")); 
 				backgroundd[x] = background[x].getScaledInstance(background[x].getWidth(),900, Image.SCALE_DEFAULT);
 			}
 			for(int x=0;x<num3;x++){
@@ -88,25 +87,18 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 				// 6 = moon
 			}
 			for(int x=0;x<3;x++){
-				rock[x]= ImageIO.read(new File("rock"+ x +".png")); 
+				rock[x]= ImageIO.read(new File("gameObjects/rock"+ x +".png")); 
 				rocks[x] = rock[x].getScaledInstance(sizee, sizee, Image.SCALE_DEFAULT);
 			}
-			heart= ImageIO.read(new File("heart.png")); 
+			heart= ImageIO.read(new File("gameObjects/heart.png")); 
 			heartt= heart.getScaledInstance(sizee, sizee, Image.SCALE_DEFAULT);
-			arrow= ImageIO.read(new File("arrow.png")); 
+			arrow= ImageIO.read(new File("gameObjects/arrow.png")); 
 			arroww= arrow.getScaledInstance(sizee*3/2, sizee, Image.SCALE_DEFAULT);
 		}
 		catch (IOException e) {
 			System.out.println(e+" what image?");
 		}
 		makeList();
-		
-		//System.out.println(rockList);
-			//make your list of obstacles here.
-			//just walk through the obstacle array and create a list of Obstacles
-
-
-
 		frame.addKeyListener(this);
 		frame.add(this);
 		frame.setSize(1500,900);
@@ -118,7 +110,7 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 	}
 	public void music(){
 		try{
-			AudioInputStream audioIn = AudioSystem.getAudioInputStream(GameTemplate.class.getResource("wolf3.wav"));
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(GameTemplate.class.getResource("sound/wolf3.wav"));
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioIn);
 			clip.start();
@@ -175,7 +167,6 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 					rockCounter++;
 					rockSpeed = 0;
 					rockList.get(rockCounter).setBool(true);
-					System.out.println("Rock "+rockCounter+ " is released");
 				}
 
 				if(runBool){
@@ -208,11 +199,8 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 					}
 				}
 					if(runBool && wolfBox.intersects(rockList.get(rockCounter).getHitbox())){
-						System.out.println("Entered WolfBox");
 						if(rockList.get(rockCounter).getId() == 1){
-							System.out.println("Rock:" + rockCounter);
 							liveCount--;
-							System.out.println("LiveCount: " + liveCount);
 						}
 						else if(rockList.get(rockCounter).getId() == 2 && liveCount<=2){
 							liveCount++;
@@ -223,7 +211,6 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 						rockList.get(rockCounter).setBool(false);
 					}
 					else if(!runBool && jumpBox.intersects(rockList.get(rockCounter).getHitbox())){
-						System.out.println("Entered JumpBox");
 						if(rockList.get(rockCounter).getId() == 1){
 							liveCount--;
 						}
@@ -239,7 +226,6 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 				
 			if(restart)
 			{
-				System.out.println("Restarted");
 				makeList();
 				rockCounter = 0;
 				imgCount=0;
@@ -330,7 +316,6 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 				g2d.drawString("Level Up...FASTER!!", 20, 20);
 			}
 			if(rockCounter%5 == 0 && rockCounter!=alreadyDone){
-				System.out.println("levelUp");
 				music();
 				gameSpeed +=5;
 				alreadyDone = rockCounter;
@@ -377,16 +362,12 @@ public class GameTemplate extends JPanel implements KeyListener,Runnable
 	}
 	public void keyPressed(KeyEvent key)
 	{
-		//System.out.println(key.getKeyCode());
+
 		if(key.getKeyCode()==32)
 		{
 			runBool = false;
 			
 		}
-		// if(key.getKeyCode()==39)
-		// {
-		// 	runBool = true;
-		// }
 		if(key.getKeyCode()==10)
 			restart=true;
 	}
